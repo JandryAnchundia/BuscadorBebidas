@@ -4,7 +4,7 @@ import useBebidas from '../hooks/useBebidas';
 
 const Bebida = ({bebida}) => {
 
-    const {handleModalClick } = useBebidas()
+    const {handleModalClick, handleBebidaIdClick} = useBebidas()
 
   return (
     <Col md={6} lg={3}>
@@ -30,6 +30,7 @@ const Bebida = ({bebida}) => {
                     onClick={ ()=> {
 
                         handleModalClick()
+                        handleBebidaIdClick(bebida.idDrink);
 
                         
                     } }

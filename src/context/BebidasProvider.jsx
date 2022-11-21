@@ -4,12 +4,46 @@ import axios from "axios";
 import { Modal } from "react-bootstrap";
 
 
+
 const BebidasContext = createContext();
 
   const BebidasProvider = ({children})=>{
 
     const [bebidas, setBebidas] = useState([]);
     const [modal, setModal] =  useState(false);
+    const [bebidaId, setBebidaId] = useState(null);
+    const [receta, setReceta] = useState({});
+    const [cargando, setCargando] = useState(false);
+
+    useEffect(()=> {
+
+      setCargando(true);
+
+      const obtenerReceta = async () => {
+          if(!bebidaId) return
+
+          try{
+            
+            const url = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${bebidaId}`
+
+            const {data} = await axios(url)
+            setReceta(data.drinks[0])
+
+          } catch (error) {
+
+            console.log(error);
+
+          } finally {
+            setCargando(false)
+          }
+
+      }
+
+      obtenerReceta()
+
+
+
+    }, [bebidaId])
 
 
 
@@ -40,6 +74,10 @@ const BebidasContext = createContext();
         setModal(!modal)
     }
 
+    const handleBebidaIdClick = id => {
+      setBebidaId(id)
+    }
+
 
 
 
@@ -55,7 +93,10 @@ const BebidasContext = createContext();
         consultarBebidas, 
         bebidas, 
         handleModalClick, 
-        modal
+        modal, 
+        handleBebidaIdClick, 
+        receta, 
+        cargando
 
       
     }}
